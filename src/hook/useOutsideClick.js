@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
 export const useOutsideClick = (callback) => {
-  const ref = useRef(null);
+  const handlersRef = useRef(new Map());
 
   useEffect(() => {
     const handleClick = (event) => {
         const handlers = handlersRef.current;
         handlers.forEach((callback, element) => {
-            if (!element.contains(event.target)) {
+            if (element && !element.contains(event.target)) {
                 callback();
             }
         })
@@ -20,15 +20,15 @@ export const useOutsideClick = (callback) => {
     };
   }, []);
 
-  return (callback) => {
-    return (element) => {
+  return (element) => {
+    
         if (!element) return;
 
-        handlersRef.current.set(callback, element);
+        handlersRef.current.set(element, callback);
         
         return () => {
-            handlersRef.current.delete(callback);
+            handlersRef.current.delete(element);
         }
-    }
+    
   };
 };

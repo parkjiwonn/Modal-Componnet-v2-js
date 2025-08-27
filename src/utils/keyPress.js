@@ -1,4 +1,4 @@
-export const keyPress = (handler, options = {}) => {
+export const keyPress = (handlers, options = {}) => {
     const { preventDefault = false , caseSensitive = false} = options;
 
     return (event) => {
@@ -15,17 +15,17 @@ export const keyPress = (handler, options = {}) => {
             'ArrowLeft': 'onArrowLeft',
             'ArrowRight': 'onArrowRight',
         }
-        let handler;
+        let handlerName;
 
         if(defaultKeyMap[key]) {
-            handler = defaultKeyMap[key];
+            handlerName = defaultKeyMap[key];
         }else {
             // 커스텀 키 처리
             const normalizedKey = caseSensitive ? key : key.toLowerCase();
-            handler = `on${normalizedKey}`;
+            handlerName = handlers[normalizedKey];
         }
 
-        if(handler) {
+        if(handlerName) {
             const shouldPreventDefault = 
             preventDefault === true || 
             (Array.isArray(preventDefault) && preventDefault.includes(key));
@@ -34,7 +34,7 @@ export const keyPress = (handler, options = {}) => {
                 event.preventDefault();
             }
 
-            handler(event);
+            handlers[handlerName](event);
         }
     }
 }

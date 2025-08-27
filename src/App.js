@@ -1,10 +1,13 @@
+import React from 'react';
 import './App.css';
+import { ModalProvider } from './hook/useModal';
+import TestPage from './components/pages/TestPage';
 
 function App() {
   return (
-    <div className="App">
-      
-    </div>
+    <ModalProvider>
+      <TestPage />
+    </ModalProvider>
   );
 }
 
